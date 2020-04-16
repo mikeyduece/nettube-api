@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, module: :users, only: %i[create show] do
-        resource :favorites, module: :favorites, only: %i[create destroy index]
+        resources :favorites, module: :favorites, only: %i[create destroy index]
       end
       
     end

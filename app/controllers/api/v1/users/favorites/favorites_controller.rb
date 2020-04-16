@@ -13,6 +13,13 @@ module Api
             end
           end
           
+          def destroy
+            favorite = current_api_user.favorites.find_by(id: params[:id])
+            return success_response(204, favorite: { deleted: true }) if favorite.destroy
+            
+            error_response(favorite.full_messages.to_sentence.first, 500)
+          end
+          
           private
           
           def video_params
@@ -23,7 +30,7 @@ module Api
           def video_blueprint
             ::Videos::OverviewBlueprint
           end
-          
+        
         end
       end
     end
