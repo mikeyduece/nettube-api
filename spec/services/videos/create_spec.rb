@@ -13,6 +13,7 @@ describe 'Video Service' do
       description: "It's a thing'"
     } }
   }
+  
   it 'should create video when favorited' do
     video_service(:favorites, :create, user, video_params) do |success, _failure|
       success.call do |resource|

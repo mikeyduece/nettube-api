@@ -6,7 +6,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, module: :users, only: %i[create]
+      resources :users, module: :users, only: %i[create show] do
+        resources :favorites, module: :favorites, only: %i[create destroy index]
+      end
+      
     end
   end
 end
