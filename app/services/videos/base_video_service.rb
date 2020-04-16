@@ -19,19 +19,18 @@ class Videos::BaseVideoService
   attr_reader :user, :params
   
   def create_video
-    video_params = params[:video]
-    video = Video.find_by(youtube_id: video_params[:youtube_id])
+    video = Video.find_by(youtube_id: params[:youtube_id])
     
-    if video && video.etag != video_params[:etag]
-      video.update_attributes(etag: video_params[:etag])
+    if video && video.etag != params[:etag]
+      video.update_attributes(etag: params[:etag])
     elsif video.nil?
-      video = Video.create(etag:         video_params[:etag],
-                           youtube_id:       video_params[:youtube_id],
-                           img_high:     video_params[:img_high],
-                           img_default:  video_params[:image_default],
-                           title:        video_params[:title],
-                           published_at: video_params[:published_at],
-                           description:  video_params[:description]
+      video = Video.create(etag:         params[:etag],
+                           youtube_id:       params[:youtube_id],
+                           img_high:     params[:img_high],
+                           img_default:  params[:image_default],
+                           title:        params[:title],
+                           published_at: params[:published_at],
+                           description:  params[:description]
       )
     end
     video
