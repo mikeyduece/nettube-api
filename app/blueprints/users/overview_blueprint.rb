@@ -1,6 +1,4 @@
 class Users::OverviewBlueprint < BaseBlueprint
-  identifier :id
-  
   view :normal do
     fields :name, :email_address
   end
