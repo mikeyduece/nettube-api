@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   context :associations do
     it { should have_many(:access_tokens) }
     it { should have_many(:access_grants) }
+    it { should have_many(:favorites) }
   end
   
   context :validations do

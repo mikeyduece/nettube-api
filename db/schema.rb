@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_123657) do
+ActiveRecord::Schema.define(version: 2020_04_16_190657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 2020_04_16_123657) do
     t.index ["first_name"], name: "index_admins_on_first_name"
     t.index ["last_name"], name: "index_admins_on_last_name"
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "video_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "video_id"], name: "index_favorites_on_user_id_and_video_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+    t.index ["video_id"], name: "index_favorites_on_video_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -103,6 +113,24 @@ ActiveRecord::Schema.define(version: 2020_04_16_123657) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "videos", force: :cascade do |t|
+    t.string "etag"
+    t.string "youtube_id"
+    t.string "img_high"
+    t.string "img_default"
+    t.string "title"
+    t.string "description"
+    t.datetime "published_at"
+    t.integer "number_of_favorites", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["number_of_favorites"], name: "index_videos_on_number_of_favorites"
+    t.index ["title"], name: "index_videos_on_title"
+    t.index ["youtube_id"], name: "index_videos_on_youtube_id"
+  end
+
+  add_foreign_key "favorites", "users"
+  add_foreign_key "favorites", "videos"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end
