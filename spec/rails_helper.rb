@@ -94,6 +94,16 @@ def use_cassette(cassette, &block)
   end
 end
 
+def video_service(model, method, user, params, &block)
+  "Videos::#{klassify(model)}::#{klassify(method)}".constantize.call(user, params) do |success, _failure|
+    yield(success, _failure)
+  end
+end
+
+def klassify(klass)
+  klass.to_s.titleize
+end
+
 def parse_json(body)
   JSON.parse(body, symbolize_names: true)
 end
