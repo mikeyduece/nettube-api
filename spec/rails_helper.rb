@@ -87,3 +87,23 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+def use_cassette(cassette, &block)
+  VCR.use_cassette(cassette, allow_playback_repeats: true, record: :new_episodes) do
+    yield
+  end
+end
+
+def video_service(model, method, user, params, &block)
+  "Videos::#{klassify(model)}::#{klassify(method)}".constantize.call(user, params) do |success, _failure|
+    yield(success, _failure)
+  end
+end
+
+def klassify(klass)
+  klass.to_s.titleize
+end
+
+def parse_json(body)
+  JSON.parse(body, symbolize_names: true)
+end

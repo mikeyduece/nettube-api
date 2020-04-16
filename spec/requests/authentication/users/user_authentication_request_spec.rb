@@ -50,6 +50,5 @@ describe 'User Authentication' do
   end
   
   it 'should show an error if not logged in' do
-  
   end
 end
