@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_135957) do
+ActiveRecord::Schema.define(version: 2020_04_17_144527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,18 +92,26 @@ ActiveRecord::Schema.define(version: 2020_04_17_135957) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "playlist_videos", force: :cascade do |t|
+    t.bigint "video_id", null: false
+    t.bigint "playlist_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["playlist_id", "video_id"], name: "index_playlist_videos_on_playlist_id_and_video_id", unique: true
+    t.index ["playlist_id"], name: "index_playlist_videos_on_playlist_id"
+    t.index ["video_id"], name: "index_playlist_videos_on_video_id"
+  end
+
   create_table "playlists", force: :cascade do |t|
     t.string "name"
     t.integer "number_of_favorites", default: 0
     t.bigint "user_id", null: false
-    t.bigint "video_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_playlists_on_name"
     t.index ["number_of_favorites"], name: "index_playlists_on_number_of_favorites"
-    t.index ["user_id", "video_id", "name"], name: "index_playlists_on_user_id_and_video_id_and_name", unique: true
+    t.index ["user_id", "name"], name: "index_playlists_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
-    t.index ["video_id"], name: "index_playlists_on_video_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -147,6 +155,7 @@ ActiveRecord::Schema.define(version: 2020_04_17_135957) do
   add_foreign_key "favorites", "videos"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "playlist_videos", "playlists"
+  add_foreign_key "playlist_videos", "videos"
   add_foreign_key "playlists", "users"
-  add_foreign_key "playlists", "videos"
 end
