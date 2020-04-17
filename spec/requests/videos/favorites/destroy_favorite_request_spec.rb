@@ -4,7 +4,8 @@ describe 'Delete Favorite' do
   let(:user) { create(:user) }
   let(:token) { Doorkeeper::AccessToken.new(resource_owner_id: user.id) }
   let(:video_params1) {
-    { video: {
+    { target_type: 'Video',
+      video: {
       etag: "string",
       youtube_id: "string_thing",
       img_high: "another_string",
@@ -16,7 +17,8 @@ describe 'Delete Favorite' do
   }
   
   let(:video_params2) {
-    { video: {
+    { target_type: 'Video',
+      video: {
       etag: "string2",
       youtube_id: "string_thing2",
       img_high: "another_string2",
@@ -45,17 +47,17 @@ describe 'Delete Favorite' do
     
     delete api_v1_user_favorite_path(user.id, Favorite.last.id)
     
-    video = Favorite.last.video
+    video = Favorite.last.target
     expect(Favorite.count).to eq(1)
     expect(video.title).to eq(video_params1[:video][:title])
   end
 
   it 'should decrement Video#number_of_favorites' do
     user_2 = create(:user)
-    create(:favorite, user: user_2, video: Video.last)
+    create(:favorite, user: user_2, target: Video.last)
     expect(Video.last.number_of_favorites).to eq(2)
     
-    favorite = user.favorites.find_by(video_id: Video.last)
+    favorite = user.favorites.find_by(target: Video.last)
     
     delete api_v1_user_favorite_path(user.id, favorite.id)
     expect(Video.last.number_of_favorites).to eq(1)
