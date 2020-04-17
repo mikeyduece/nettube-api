@@ -3,8 +3,8 @@ module Videos
     class Create < BaseVideoService
       
       def call(&block)
-        favorited_video = create_favorite
-        yield(Success.new(favorited_video), NoTrigger)
+        favorite = create_favorite
+        yield(Success.new(favorite), NoTrigger)
         
       rescue StandardError => e
         yield(NoTrigger, Failure.new(e.message, 500))
@@ -13,10 +13,16 @@ module Videos
       private
       
       def create_favorite
-        video = find_or_create_video
-        user.favorites.create(video: video)
+        target = find_or_create_target
+        user.favorites.create(target: target)
         
-        video
+        target
+      end
+
+      def find_or_create_target
+        return find_or_create_video if params[:target_type].eql?('Video')
+        
+        find_playlist!
       end
       
       def update_etag(etag)

@@ -7,4 +7,8 @@ class Video < ApplicationRecord
   
   validates :number_of_favorites, numericality: { greater_than_or_equal_to: 0 }
   validates :youtube_id, presence: true
+  
+  def blueprint
+    ::Videos::OverviewBlueprint
+  end
 end
