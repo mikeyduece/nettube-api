@@ -13,7 +13,7 @@ module Videos
       private
       
       def create_favorite
-        video = create_video
+        video = find_or_create_video
         user.favorites.create(video: video)
         
         video

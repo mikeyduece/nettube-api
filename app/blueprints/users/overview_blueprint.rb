@@ -1,6 +1,6 @@
 class Users::OverviewBlueprint < BaseBlueprint
   view :normal do
-    fields :name, :email_address
+    fields :name, :email
   end
   
   view :extended do

@@ -6,6 +6,8 @@ RSpec.describe Video, type: :model do
   context :associations do
     it { should have_many(:favorites) }
     it { should have_many(:users).through(:favorites) }
+    it { should have_many(:playlist_videos) }
+    it { should have_many(:playlists).through(:playlist_videos) }
   end
   
   context :validations do
