@@ -42,22 +42,11 @@ describe 'Video Service' do
   end
   
   context 'Playlists' do
-    it 'should create video when added to a Playlist' do
-      video_service(:playlists, :create, user, playlist_params) do |success, _failure|
-        success.call do |resource|
-          expect(resource).to be_a(Playlist)
-          expect(resource.name).to eq(playlist_params[:playlist][:name])
-          expect(Playlist.last.videos).to include(Video.last)
-        end
-      end
-    end
-    
     it 'should allow users to create more than one playlist' do
       video_service(:playlists, :create, user, playlist_params) do |success, _failure|
         success.call do |resource|
           expect(resource).to be_a(Playlist)
           expect(resource.name).to eq(playlist_params[:name])
-          expect(Playlist.last.videos).to include(Video.last)
         end
       end
 
@@ -75,7 +64,6 @@ describe 'Video Service' do
         success.call do |resource|
           expect(resource).to be_a(Playlist)
           expect(resource.name).to eq(playlist_params[:name])
-          expect(Playlist.last.videos).to include(Video.last)
         end
       end
       
@@ -86,7 +74,6 @@ describe 'Video Service' do
         success.call do |resource|
           expect(resource).to be_a(Playlist)
           expect(resource.name).to eq(playlist_params[:name])
-          expect(Playlist.last.videos).to include(Video.last)
         end
       end
       
@@ -95,5 +82,20 @@ describe 'Video Service' do
       expect(user_2.playlists.count).to eq(1)
     end
     
+  end
+  
+  context 'Playlists::Videos' do
+    it 'should create video when added to a Playlist' do
+      playlist = create(:playlist, user: user)
+      
+      video_service(:playlists_videos, :create, user, {playlist_id: playlist.id, video: video_params}) do |success, _failure|
+        success.call do |resource|
+          expect(resource).to be_a(Playlist)
+          expect(resource.name).to eq(playlist_params[:playlist][:name])
+          expect(resource.videos.count).to eq(1)
+        end
+      end
+    end
+
   end
 end

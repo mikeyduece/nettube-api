@@ -101,7 +101,7 @@ def video_service(model, method, user, params, &block)
 end
 
 def klassify(klass)
-  klass.to_s.titleize
+  klass.to_s.titleize.split.join('::')
 end
 
 def parse_json(body)
