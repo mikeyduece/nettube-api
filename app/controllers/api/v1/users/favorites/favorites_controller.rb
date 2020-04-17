@@ -7,10 +7,7 @@ module Api
           
           def create
             Videos::Favorites::Create.call(current_api_user, params) do |success, failure|
-              success.call do |resource|
-                success_response(201, favorite: serialized_resource(resource, resource.blueprint))
-              end
-              
+              success.call { success_response(201, favorited: true) }
               failure.call(&method(:error_response))
             end
           end
