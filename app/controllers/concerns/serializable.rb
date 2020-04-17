@@ -9,11 +9,11 @@ module Serializable
   end
   
   def error_response(message, status = 404)
-    default_response = default_response(status, message, nil)
+    default_response = default_response(status, message)
     render json: default_response
   end
   
-  def default_response(status, message, data)
+  def default_response(status, message, data = {})
     { status: status, message: message }.merge(data)
   end
 
