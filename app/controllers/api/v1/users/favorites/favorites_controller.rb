@@ -5,12 +5,6 @@ module Api
         class FavoritesController < UsersBaseController
           skip_before_action :set_user!, only: %i[create destroy]
           
-          def index
-            success_response(
-              200,
-              favorites: serialized_resource(@user.favorite_videos, video_blueprint))
-          end
-          
           def create
             Videos::Favorites::Create.call(current_api_user, params) do |success, failure|
               success.call do |resource|

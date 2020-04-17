@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, module: :users, only: %i[create show] do
         resources :favorites, module: :favorites, only: %i[create destroy index]
+        resource :favorites, module: :favorites do
+          resources :videos, only: :index
+        end
+        
         resources :playlists, module: :playlists, only: %i[create destroy index] do
           resources :videos, module: :videos, only: %i[create destroy]
         end
