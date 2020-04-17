@@ -10,6 +10,10 @@ class Playlist < ApplicationRecord
   validates :name, uniqueness: { scope: %i[user_id], case_sensitive: false }
   validates :number_of_favorites, numericality: { greater_than_or_equal_to: 0 }
   
+  enum view_status: %i[closed open]
+  
+  scope :top_ten, -> { order('COUNT(number_of_favorites) DESC').group(:id).limit(10) }
+  
   def blueprint
     ::Users::Playlists::OverviewBlueprint
   end
