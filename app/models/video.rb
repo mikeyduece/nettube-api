@@ -7,6 +7,8 @@ class Video < ApplicationRecord
   
   validates :number_of_favorites, numericality: { greater_than_or_equal_to: 0 }
   validates :youtube_id, presence: true
+
+  scope :top_ten, -> { order('COUNT(number_of_favorites) DESC').group(:id).limit(10) }
   
   def blueprint
     ::Videos::OverviewBlueprint
