@@ -3,7 +3,7 @@ module Videos
     class Create < BaseVideoService
       def call(&block)
         create_playlist!
-        add_video
+        add_video!
         
         yield(Success.new(@playlist), NoTrigger)
   
@@ -15,11 +15,10 @@ module Videos
       private
       
       def create_playlist!
-        @playlist ||= user.playlists.build(name: params[:name])
-        @playlist.save!
+        @playlist ||= user.playlists.find_or_create_by(name: params[:name])
       end
       
-      def add_video
+      def add_video!
         video = create_video
         return unless video
         
