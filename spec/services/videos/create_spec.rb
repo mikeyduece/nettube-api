@@ -52,20 +52,6 @@ describe 'Video Service' do
       end
     end
     
-    it 'should not create playlist with same same for same user' do
-      video_service(:playlists, :create, user, playlist_params) do |success, _failure|
-        success.call do |resource|
-          expect(resource).to be_a(Playlist)
-          expect(resource.name).to eq(playlist_params[:name])
-          expect(Playlist.last.videos).to include(Video.last)
-        end
-      end
-      
-      video_service(:playlists, :create, user, playlist_params) do |_success, failure|
-        expect(failure.message).to eq('You already have a playlist with that name')
-      end
-    end
-
     it 'should allow users to create more than one playlist' do
       video_service(:playlists, :create, user, playlist_params) do |success, _failure|
         success.call do |resource|
