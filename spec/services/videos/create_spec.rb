@@ -44,6 +44,7 @@ describe 'Video Service' do
     video_service(:playlists, :create, user, playlist_params) do |success, _failure|
       success.call do |resource|
         expect(resource).to be_a(Playlist)
+        expect(resource.name).to eq(playlist_params[:playlist][:name])
         expect(Playlist.last.videos).to include(Video.last)
       end
     end
