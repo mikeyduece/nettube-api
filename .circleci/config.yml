@@ -1,9 +1,9 @@
 version: 2
+dependencies:
+  pre:
+    - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
+    - gem install bundler
 jobs:
-  dependencies:
-    pre:
-      - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
-      - gem install bundler
   build:
     parallelism: 3
     working_directory: ~/nettube-api
