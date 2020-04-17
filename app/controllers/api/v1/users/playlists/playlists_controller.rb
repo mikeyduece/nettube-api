@@ -5,7 +5,7 @@ module Api
         class PlaylistsController < UsersBaseController
           
           def create
-            Videos::Playlists::Create.call(current_api_user, playlist_params) do |success, failure|
+            ::Videos::Playlists::Create.call(current_api_user, playlist_params) do |success, failure|
               success.call do |resource|
                 success_response(201, playlist: serialized_resource(resource, ::Users::Playlists::OverviewBlueprint))
               end
