@@ -1,5 +1,5 @@
 class Playlist < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, inverse_of: :playlists
   
   has_many :playlist_videos, inverse_of: :playlist, dependent: :destroy
   has_many :videos, through: :playlist_videos
