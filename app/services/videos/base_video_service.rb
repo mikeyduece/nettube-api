@@ -17,8 +17,12 @@ class Videos::BaseVideoService
   private
   
   attr_reader :user, :params
+
+  def find_playlist!
+    @playlist ||= user.playlists.find_by(id: params[:playlist_id] || params[:id])
+  end
   
-  def create_video
+  def find_or_create_video
     video_params = params[:video] || params
     video = Video.find_by(youtube_id: video_params[:youtube_id])
     
@@ -36,5 +40,5 @@ class Videos::BaseVideoService
     end
     video
   end
-  
+
 end
