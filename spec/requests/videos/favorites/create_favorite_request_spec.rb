@@ -6,7 +6,8 @@ describe 'Create Favorites' do
   let(:token) { Doorkeeper::AccessToken.new(resource_owner_id: user.id) }
   let(:token_2) { Doorkeeper::AccessToken.new(resource_owner_id: user_2.id) }
   let(:video_params1) {
-    { video: {
+    { target_type: 'Video',
+      video: {
       etag: "string",
       youtube_id: "string_thing",
       img_high: "another_string",
@@ -18,7 +19,8 @@ describe 'Create Favorites' do
   }
   
   let(:video_params2) {
-    { video: {
+    { target_type: 'Video',
+      video: {
       etag: "string2",
       youtube_id: "string_thing2",
       img_high: "another_string2",
@@ -38,7 +40,7 @@ describe 'Create Favorites' do
     
     expect(response).to be_successful
     
-    video = Favorite.last.video
+    video = Favorite.last.target
     
     expect(Favorite.count).to eq(1)
     expect(video.title).to eq(video_params1[:video][:title])

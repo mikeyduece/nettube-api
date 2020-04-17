@@ -7,7 +7,7 @@ describe 'Show Favorites' do
   
   it 'should list of favorites' do
     allow_any_instance_of(ApiController).to receive(:doorkeeper_token).and_return(token)
-    get api_v1_user_favorites_path(user)
+    get api_v1_user_favorites_videos_path(user)
     
     expect(response).to be_successful
     

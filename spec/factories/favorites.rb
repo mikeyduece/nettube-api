@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :favorite do
     user
-    video
+    association :target, factory: :video
   end
 end
