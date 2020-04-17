@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_144527) do
+ActiveRecord::Schema.define(version: 2020_04_17_194805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,12 +38,13 @@ ActiveRecord::Schema.define(version: 2020_04_17_144527) do
 
   create_table "favorites", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "video_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "video_id"], name: "index_favorites_on_user_id_and_video_id", unique: true
+    t.string "target_type", null: false
+    t.bigint "target_id", null: false
+    t.index ["target_type", "target_id"], name: "index_favorites_on_target_type_and_target_id"
+    t.index ["user_id", "target_id", "target_type"], name: "index_favorites_on_user_id_and_target_id_and_target_type", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
-    t.index ["video_id"], name: "index_favorites_on_video_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -152,7 +153,6 @@ ActiveRecord::Schema.define(version: 2020_04_17_144527) do
   end
 
   add_foreign_key "favorites", "users"
-  add_foreign_key "favorites", "videos"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "playlist_videos", "playlists"
