@@ -3,9 +3,9 @@ class Favorite < ApplicationRecord
   belongs_to :video, inverse_of: :favorites
   
   validates :user_id, :video_id, presence: true
-  validates :video_id, uniqueness: { scope: :user_id }
+  validates :video_id, uniqueness: { scope: %i[user_id] }
   
-  before_commit :increment_number_of_favorites, on: :create
+  after_create :increment_number_of_favorites
   before_destroy :decrement_number_of_favorites
   
   private

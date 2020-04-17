@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe 'Create Favorites' do
   let!(:user) { create(:user) }
+  let!(:user_2) {create(:user)}
   let(:token) { Doorkeeper::AccessToken.new(resource_owner_id: user.id) }
+  let(:token_2) { Doorkeeper::AccessToken.new(resource_owner_id: user_2.id) }
   let(:video_params1) {
     { video: {
       etag: "string",
@@ -49,5 +51,15 @@ describe 'Create Favorites' do
     
     post api_v1_user_favorites_path(user), params: video_params2
     expect(Favorite.count).to eq(2)
+  end
+
+  it 'should increment Video#increment_number_of_favorites' do
+    post api_v1_user_favorites_path(user), params: video_params1
+    expect(Video.last.number_of_favorites).to eq(1)
+    
+    allow_any_instance_of(ApiController).to receive(:doorkeeper_token).and_return(token_2)
+    post api_v1_user_favorites_path(user_2), params: video_params1
+    
+    expect(Video.last.number_of_favorites).to eq(2)
   end
 end

@@ -1,9 +1,5 @@
 version: 2
 jobs:
-  dependencies:
-    pre:
-      - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
-      - gem install bundler
   build:
     parallelism: 3
     working_directory: ~/nettube-api
@@ -19,6 +15,10 @@ jobs:
           POSTGRES_DB: nettube-api_test
           POSTGRES_HOST_AUTH_METHOD: trust
     steps:
+      - dependencies:
+          pre:
+            - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
+            - gem install bundler
       - checkout
       # Restore Cached Dependencies
       - type: cache-restore

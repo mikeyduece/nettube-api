@@ -5,7 +5,7 @@ module Videos
       def call(&block)
         favorited_video = create_favorite
         yield(Success.new(favorited_video), NoTrigger)
-      
+        
       rescue StandardError => e
         yield(NoTrigger, Failure.new(e.message, 500))
       end
