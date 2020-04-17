@@ -16,6 +16,19 @@ describe 'Create Playlist' do
       } }
   }
 
+  let(:playlist_params2) {
+    { name: 'Playlist1',
+      video: {
+        etag: "string",
+        youtube_id: "string_thing_again",
+        img_high: "another_string",
+        img_default: "default_string",
+        title: "Title2",
+        published_at: DateTime.now,
+        description: "It's a thing'"
+      } }
+  }
+
   before(:each) do
     allow_any_instance_of(ApiController).to receive(:doorkeeper_token).and_return(token)
   end
@@ -25,11 +38,12 @@ describe 'Create Playlist' do
     
     expect(response).to be_successful
     
-    playlist_data = JSON.parse(response.body, symbolize_names: true)
+    playlist_data = parse_json(response.body)
     playlist = user.playlists.last
     
     expect(user.playlists.count).to eq(1)
     expect(playlist.name).to eq(playlist_params[:name])
     expect(playlist.name).to eq(playlist_data[:playlist][:name])
   end
+
 end
