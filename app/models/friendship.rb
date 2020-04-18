@@ -1,6 +1,6 @@
-class Friend < ApplicationRecord
+class Friendship < ApplicationRecord
   belongs_to :user
-  belongs_to :friend, class_name: 'User', foreign_key: :friend_id
+  belongs_to :friend, class_name: 'User'
 
   def create_inverse_relationship
     friend.friends.create(friend: user)
