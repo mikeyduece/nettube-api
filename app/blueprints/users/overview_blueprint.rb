@@ -6,4 +6,5 @@ class Users::OverviewBlueprint < BaseBlueprint
   view :extended do
     fields :first_name, :last_name, :email
   end
+  
 end
