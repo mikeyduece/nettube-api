@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_205501) do
+ActiveRecord::Schema.define(version: 2020_04_17_211302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,23 @@ ActiveRecord::Schema.define(version: 2020_04_17_205501) do
     t.index ["target_type", "target_id"], name: "index_favorites_on_target_type_and_target_id"
     t.index ["user_id", "target_id", "target_type"], name: "index_favorites_on_user_id_and_target_id_and_target_type", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "friend_requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friend_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_friend_requests_on_user_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friend_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -155,6 +172,8 @@ ActiveRecord::Schema.define(version: 2020_04_17_205501) do
   end
 
   add_foreign_key "favorites", "users"
+  add_foreign_key "friend_requests", "users"
+  add_foreign_key "friendships", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "playlist_videos", "playlists"
