@@ -52,17 +52,16 @@ ActiveRecord::Schema.define(version: 2020_04_17_211302) do
     t.bigint "friend_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["friend_id"], name: "index_friend_requests_on_friend_id"
     t.index ["user_id"], name: "index_friend_requests_on_user_id"
   end
 
-  create_table "friends", force: :cascade do |t|
+  create_table "friendships", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "friend_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["friend_id"], name: "index_friends_on_friend_id"
-    t.index ["user_id"], name: "index_friends_on_user_id"
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -173,9 +172,8 @@ ActiveRecord::Schema.define(version: 2020_04_17_211302) do
   end
 
   add_foreign_key "favorites", "users"
-  add_foreign_key "friend_requests", "friends"
   add_foreign_key "friend_requests", "users"
-  add_foreign_key "friends", "users"
+  add_foreign_key "friendships", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "playlist_videos", "playlists"
