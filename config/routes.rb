@@ -7,9 +7,16 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, module: :users, only: %i[create show] do
+        resources :friend_requests, module: :friend_requests, only: %i[index create destroy] do
+          put :accept, on: :member
+        end
+        
+        resources :friends, module: :friends, only: %i[index destroy]
+        
         resources :favorites, module: :favorites, only: %i[create destroy index]
         resource :favorites, module: :favorites, only: [] do
           resources :videos, only: :index
+          resources :playlists, only: :index
         end
         
         resources :playlists, module: :playlists, only: %i[create destroy index] do
