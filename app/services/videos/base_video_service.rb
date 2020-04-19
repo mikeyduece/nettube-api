@@ -17,6 +17,14 @@ class Videos::BaseVideoService
   private
   
   attr_reader :user, :params
+  
+  def limit
+    params[:limit]
+  end
+  
+  def offset
+    params[:offset]
+  end
 
   def find_playlist!
     @playlist ||= user.playlists.find_by(id: params[:playlist_id] || params[:id])

@@ -11,6 +11,14 @@ class ApiController < ActionController::API
   
   private
   
+  def limit
+    params[:limit] || 10
+  end
+  
+  def offset
+    params[:offset] || 0
+  end
+  
   def ensure_user_owns(resource, id, &block)
     if current_api_user.send(resource).find_by(id: id)
       yield
