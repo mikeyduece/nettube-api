@@ -1,5 +1,6 @@
 class ApiController < ActionController::API
   include Serializable
+  include Websocketable::Blueprinter::Helper
   
   before_action :doorkeeper_authorize!
 
