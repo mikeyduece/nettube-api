@@ -17,7 +17,9 @@ module Api
           def create
             ::Videos::Playlists::Create.call(current_api_user, playlist_params) do |success, failure|
               success.call do |resource|
-                success_response(201, playlist: serialized_resource(resource, ::Users::Playlists::OverviewBlueprint))
+                blueprint = ::Users::Playlists::OverviewBlueprint
+                success_response(201, playlist: serialized_resource(resource, blueprint))
+                broadcast_for_channel(:playlists_channel, blueprint, resource)
               end
               
               failure.call(&method(:error_response))
