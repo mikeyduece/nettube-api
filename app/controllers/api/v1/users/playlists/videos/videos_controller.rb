@@ -19,15 +19,17 @@ module Api
             end
             
             def destroy
-              playlist = current_api_user.playlists.find_by(id: params[:playlist_id])
-              video = playlist.videos.find_by(id: params[:video_id] || params[:id])
-              
-              if video.destroy
-                return success_response(204, playlist: serialized_resource(playlist, ::Users::Playlists::OverviewBlueprint))
+              ensure_user_owns(:playlists, params[:playlist_id]) do
+                playlist = current_api_user.playlists.find_by(id: params[:playlist_id])
+                video = playlist.videos.find_by(id: params[:video_id] || params[:id])
+                
+                if video.destroy
+                  return success_response(204, playlist: serialized_resource(playlist, ::Users::Playlists::OverviewBlueprint))
+                end
+                
+                error = video.errors.full_messages.first
+                error_response(error, 500)
               end
-              
-              error = video.errors.full_messages.first
-              error_response(error, 500)
             end
           
           end
