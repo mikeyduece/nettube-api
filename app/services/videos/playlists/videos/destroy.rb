@@ -5,7 +5,7 @@ module Videos
       
         def call(&block)
           find_playlist!
-          @playlist_video.destroy!
+          playlist_video.destroy!
           
           yield(Success.new(@playlist), NoTrigger)
         rescue StandardError => e

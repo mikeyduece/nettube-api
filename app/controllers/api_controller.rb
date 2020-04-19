@@ -11,11 +11,19 @@ class ApiController < ActionController::API
   
   private
   
+  def limit
+    params[:limit] || 10
+  end
+  
+  def offset
+    params[:offset] || 0
+  end
+  
   def ensure_user_owns(resource, id, &block)
     if current_api_user.send(resource).find_by(id: id)
       yield
     else
-      error_response('You can\'t add videos to a playlist you don\'t own', 404)
+      error_response("You must own the #{resource} to modify it", 404)
     end
   end
 
