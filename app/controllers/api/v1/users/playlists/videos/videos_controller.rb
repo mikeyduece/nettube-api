@@ -23,6 +23,7 @@ module Api
                 ::Videos::Playlists::Videos::Destroy.call(current_api_user, params) do |success, failure|
                   success.call do |resource|
                     success_response(204, playlist: serialized_resource(resource, ::Users::Playlists::OverviewBlueprint))
+                    broadcast_to_channel(VideosChannel, resource)
                   end
                   
                   failure.call(&method(:error_response))
