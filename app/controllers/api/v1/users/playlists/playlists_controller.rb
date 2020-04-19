@@ -24,6 +24,17 @@ module Api
             end
           end
           
+          def toggle
+            playlist_id = params[:playlist_id] || params[:id]
+            ensure_user_owns(:playlists, playlist_id) do
+              playlist = @user.playlists.find_by(id: playlist_id)
+              
+              playlist.open? ? playlist.closed! : playlist.open!
+              
+              success_response(202, view_status: playlist.view_status)
+            end
+          end
+          
           private
           
           def playlist_params

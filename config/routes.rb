@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         end
         
         resources :playlists, module: :playlists, only: %i[create destroy index] do
+          put :toggle, on: :member
           resources :videos, module: :videos, only: %i[create destroy]
         end
       end
