@@ -37,6 +37,7 @@ gem 'cancancan', '~> 2.0'
 gem 'devise'
 gem 'doorkeeper', '>= 5.4.0.rc1'
 gem 'blueprinter'
+gem 'websocketable'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
