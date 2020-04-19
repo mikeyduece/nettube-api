@@ -31,7 +31,7 @@ describe 'Remove Videos' do
     expect(response).to be_successful
   
     playlist_data = parse_json(response.body)
-  
+    
     expect(playlist_data[:status]).to eq(404)
     expect(playlist_data[:message]).to eq('You must own the playlists to modify it')
   end
