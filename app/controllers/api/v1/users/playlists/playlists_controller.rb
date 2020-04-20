@@ -17,9 +17,7 @@ module Api
           def create
             ::Videos::Playlists::Create.call(current_api_user, playlist_params) do |success, failure|
               success.call do |resource|
-                blueprint = ::Users::Playlists::OverviewBlueprint
-                success_response(201, playlist: serialized_resource(resource, blueprint))
-                broadcast_for_channel(:playlists_channel, blueprint, resource)
+                success_response(201, playlist: serialized_resource(resource, ::Users::Playlists::OverviewBlueprint))
               end
               
               failure.call(&method(:error_response))
@@ -30,6 +28,7 @@ module Api
             playlist_id = params[:playlist_id] || params[:id]
             ensure_user_owns(:playlists, playlist_id) do
               playlist = @user.playlists.find_by(id: playlist_id)
+              return error_response('That playlist doesn\'t exist', 404) unless playlist
               
               playlist.open? ? playlist.closed! : playlist.open!
               

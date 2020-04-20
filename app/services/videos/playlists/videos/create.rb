@@ -19,6 +19,7 @@ module Videos
           return unless @playlist && video
   
           @playlist.playlist_videos.create(video: video)
+          broadcast_to_channel(VideosChannel, @playlist)
         end
         
       end
