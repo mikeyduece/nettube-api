@@ -1,5 +1,4 @@
 class Videos::BaseVideoService
-  include Websocketable::Blueprinter::Helper
   
   def self.call(user, params = {}, &block)
     new(user, params).call(&block)

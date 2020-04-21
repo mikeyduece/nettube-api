@@ -31,5 +31,8 @@ module NettubeApi
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.action_cable.disable_request_forgery_protection = true
+    config.action_cable.url = "/cable"
   end
 end

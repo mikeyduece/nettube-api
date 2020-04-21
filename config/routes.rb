@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   devise_for :admins
   devise_for :users
   root to: 'home#index'
-
+  
+  mount ActionCable.server => '/cable'
+  
   namespace :api do
     namespace :v1 do
-      mount ActionCable.server => '/cable'
       
       resources :users, module: :users, only: %i[create show] do
         resources :friend_requests, module: :friend_requests, only: %i[index create destroy] do
@@ -26,7 +27,7 @@ Rails.application.routes.draw do
           resources :videos, module: :videos, only: %i[create destroy]
         end
       end
-      
+    
     end
   end
 end
