@@ -1,6 +1,5 @@
 class Video < ApplicationRecord
-  has_many :favorites, as: :target, inverse_of: :target
-  has_many :users, through: :favorites
+  include Favoritable
   
   has_many :playlist_videos, inverse_of: :video, dependent: :destroy
   has_many :playlists, through: :playlist_videos
