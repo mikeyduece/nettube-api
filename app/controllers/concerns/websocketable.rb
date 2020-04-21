@@ -1,7 +1,7 @@
 module Websocketable
   
   def broadcast_for_channel(channel, blueprint, resource)
-    ActionCable.server.broadcast channel, hashable(blueprint, resource)
+    ActionCable.server.broadcast channel, "#{resource}": hashable(blueprint, resource)
     head :ok
   end
   

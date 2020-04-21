@@ -1,4 +1,5 @@
 class Playlist < ApplicationRecord
+  default_scope { order(updated_at: :desc) }
   include Favoritable
   
   belongs_to :user, inverse_of: :playlists
@@ -14,9 +15,15 @@ class Playlist < ApplicationRecord
   
   scope :top_ten, -> { order('COUNT(number_of_favorites) DESC').group(:id).limit(10) }
   
-  # after_create { PlaylistJob.perform_now(self) }
+  after_commit :broadcast_to_subscribers
   
   def blueprint
     ::Users::Playlists::OverviewBlueprint
+  end
+  
+  private
+  
+  def broadcast_to_subscribers
+    PlaylistRelayWorker.perform_async(id)
   end
 end
