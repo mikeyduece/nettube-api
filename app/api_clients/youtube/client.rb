@@ -2,8 +2,9 @@ class Youtube::Client
   
   def search(term:, next_page: false, previous_page: false)
     query = "?q=#{term}"
-    videos = get_url(query)
-    videos = search_with_pagination(videos, query, previous_page) if next_page
+    videos = initial_search(query) unless next_page || previous_page
+    videos = search_with_pagination(query, next_page, previous_page) if next_page || previous_page
+    
     videos
   end
 
@@ -13,11 +14,22 @@ class Youtube::Client
     return video_return[:nextPageToken], video_return[:previousPageToken]
   end
   
-  def search_with_pagination(videos, query, previous_page)
-    next_page_token, previous_page_token = set_page_tokens(videos)
-    return get_url(query + "&pageToken=#{previous_page_token}") if previous_page
+  def search_with_pagination(query, next_page, previous_page)
+    videos = paginated_search(query, @previous_page_token) if previous_page
+    videos = paginated_search(query, @next_page_token) if next_page
+    @next_page_token, @previous_page_token = set_page_tokens(videos)
     
-    get_url(query + "&pageToken=#{next_page_token}")
+    videos
+  end
+  
+  def paginated_search(query, token)
+    get_url(query + "&pageToken=#{token}")
+  end
+  
+  def initial_search(query)
+    videos = get_url(query)
+    @next_page_token, @previous_page_token = set_page_tokens(videos)
+    videos
   end
   
   def get_url(url)
