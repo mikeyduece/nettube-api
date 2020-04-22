@@ -9,24 +9,32 @@ describe 'Search' do
   end
   
   it 'should search for videos' do
-    post api_v1_search_videos_path, params: { term: 'Firefly' }
-    
-    expect(response).to be_successful
-    
-    videos = parse_json(response.body)
-    
-    expect(videos[:items].count).to eq(50)
-    expect(videos[:previousPageToken]).to be_nil
+    use_cassette('initial_search') do
+      post api_v1_search_videos_path, params: { term: 'Firefly' }
+      
+      expect(response).to be_successful
+      
+      videos = parse_json(response.body)
+      
+      expect(videos[:videos].count).to eq(50)
+      expect(videos[:meta][:previous_page_token]).to be_nil
+    end
   end
-
+  
   it 'should fetch next page of videos' do
-    post api_v1_search_videos_path, params: { term: 'Firefly' }
-  
-    expect(response).to be_successful
-  
-    videos = parse_json(response.body)
-  
-    expect(videos[:items].count).to eq(50)
-    expect(videos[:previousPageToken]).not_to be_nil
+    use_cassette('next_page_search') do
+      post api_v1_search_videos_path, params: { term: 'Firefly' }
+      initial_search = parse_json(response.body)
+      next_page_token = initial_search[:meta][:next_page_token]
+      
+      post api_v1_search_videos_path, params: { term: 'Firefly', next_page: next_page_token }
+      
+      expect(response).to be_successful
+      
+      videos = parse_json(response.body)
+      
+      expect(videos[:videos].count).to eq(50)
+      expect(videos[:meta][:previous_page_token]).not_to be_nil
+    end
   end
 end

@@ -4,8 +4,7 @@ RSpec.describe Video, type: :model do
   subject { build(:video) }
   
   context :associations do
-    it { should have_many(:favorites) }
-    it { should have_many(:users).through(:favorites) }
+    it { should have_many(:favorited_by_users).through(:favorites) }
     it { should have_many(:playlist_videos) }
     it { should have_many(:playlists).through(:playlist_videos) }
   end

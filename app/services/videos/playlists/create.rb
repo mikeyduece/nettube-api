@@ -6,8 +6,6 @@ module Videos
         yield(Success.new(@playlist), NoTrigger)
   
       rescue StandardError => e
-        puts 'ERROR'
-        puts e.inspect
         message = @playlist.errors.full_messages.first
         yield(NoTrigger, Failure.new(message, 500))
       end

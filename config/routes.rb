@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      namespace :search do
+        resources :videos, only: :create
+      end
       
       resources :users, module: :users, only: %i[create show] do
         resources :friend_requests, module: :friend_requests, only: %i[index create destroy] do

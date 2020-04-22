@@ -4,7 +4,6 @@ module Videos
       
       def call(&block)
         favorite = create_favorite
-        
         yield(Success.new(favorite), NoTrigger)
         
       rescue StandardError => e

@@ -7,7 +7,7 @@ RSpec.describe Playlist, type: :model do
     it { should belong_to(:user) }
     it {should have_many(:playlist_videos)}
     it {should have_many(:videos).through(:playlist_videos)}
-    it {should have_many(:favorites)}
+    it {should have_many(:favorited_by_users).through(:favorites)}
   end
   
   context :validations do
