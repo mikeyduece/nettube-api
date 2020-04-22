@@ -2,7 +2,7 @@ module Favoritable
   extend ActiveSupport::Concern
   
   included do
-    has_many :favorites, as: :target, inverse_of: :target
+    has_many :favorites
     has_many :favorited_by_users, through: :favorites, source: :user
   end
   
